@@ -20,13 +20,12 @@ function Map ({ province, data, onClick }) {
         right: 0,
         left: province ? 0 : 'auto',
         inRange: {
-          color: ['lightskyblue','yellow','pink', 'orangered','red']
-          // color: [
-          //   '#ffc0b1',
-          //   '#ff8c71',
-          //   '#ef1717',
-          //   '#9c0505'
-          // ]
+          color: [
+            '#ffc0b1',
+            '#ff8c71',
+            '#ef1717',
+            '#9c0505'
+          ]
         },
         tooltip : {
 					show:true,

@@ -256,7 +256,6 @@ function App () {
         <Suspense fallback={<div className="loading">地图正在加载中...</div>}>
           {city && city.areas? <CityMap city={city} data={data} />:<Map province={province} data={data} onClick={o => {
             const p = provincesByName[o.name]
-            console.log('dd',p)
             if (p) {
               setProvince(p)
             }else{

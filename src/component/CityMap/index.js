@@ -34,7 +34,12 @@ export default class CityMap extends React.Component {
         right: 0,
         left: 0,
         inRange: {
-          color: ['lightskyblue','yellow','pink', 'orangered','red']
+          color: [
+            '#ffc0b1',
+            '#ff8c71',
+            '#ef1717',
+            '#9c0505'
+          ]
         },
         pieces: [
           {min: 1000},
