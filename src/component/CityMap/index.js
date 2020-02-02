@@ -18,12 +18,26 @@ export default class CityMap extends React.Component {
     this.initCharts(city,data)
   }
 
+  getMarkData(geo){
+    return geo.map(o=> {
+      const coord = o.properties.center
+      const value = this.props.city.areas.find(p=> p.fullName === o.properties.name).confirmedCount
+      return {
+        value: `${value}人`,
+        coord
+      }
+    })
+  }
+
   initCharts(city,data){
     if(!city.adcode) return
     const cityJson = require(`../../data/city/${city.adcode}_full.json`)
     echarts.registerMap('city', cityJson);
     const myChart = echarts.init(this.mapNode);
     myChart.setOption({
+      tooltip: { 
+        show:true
+      },
       visualMap: {
         show: true,
         type: 'piecewise',// 定义为分段型 visualMap
@@ -85,9 +99,47 @@ export default class CityMap extends React.Component {
           brushType: 'stroke',
           scale: 2.5,
           period: 4
-        }
+        },
+        // markPoint: {
+        //   symbol: 'pin', // 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', path://m 0,0 h 48 v 20 h -30 l -6,10 l -6,-10 h -6 z,  path://m 0,0 h 48 v 20 h -34 l -6,10 l -6,-10 h -2 z
+        //   symbolSize: 40,
+        //   // symbolOffset: ['34%', '-50%'],
+        //   symbolKeepAspect: true,// 如果 symbol 是 path:// 的形式，是否在缩放时保持该图形的长宽比。
+        //   label:{
+        //     show:true,
+        //     color:'blue',
+        //     fontWeight:'bold',
+        //     fontSize:14,
+        //     position: "insideTop",
+        //     // distance: 7,
+        //   },
+        //   itemStyle:{
+        //     color: 'white'
+        //   },
+        //   data:this.getMarkData(cityJson.features)
+        // },
+        // markLine: {
+        //   symbolSize: 20,
+        //   data: [
+        //     [
+        //         {
+        //             x: 100,
+        //             y: 100
+        //         },
+        //         {
+        //             x: 100,
+        //             y: 200
+        //         }
+        //     ]
+        //   ]
+        // }
       }]
     });
+
+    // myChart.dispatchAction({
+    //   type: "showTip", // 根据 tooltip 的配置项显示提示框。
+    //   seriesIndex: 0,
+    // });
   }
 
   setMapElement = n => {

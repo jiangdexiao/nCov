@@ -27,10 +27,7 @@ function Map ({ province, data, onClick }) {
             '#9c0505'
           ]
         },
-        tooltip : {
-					show:true,
-					formatter: '在建工程<br /> {b}: {c0}'
-				 },
+        tooltip: { trigger: "item" },
         pieces: [
           {min: 1000},
           {min: 500, max: 999},
