@@ -12,14 +12,14 @@ import Tag from './Tag'
 import './App.css'
 import axios from 'axios'
 
-import CityMap from './CityMap'
+import {CityMap,CityMenu} from './component'
+
 dayjs.extend(relativeTime)
 
-const Map = React.lazy(() => import('./Map'))
+const Map = React.lazy(() => import('./component/ChinaMap'))
 
 const provincesByName = keyBy(provinces, 'name')
 const provincesByPinyin = keyBy(provinces, 'pinyin')
-console.log(provincesByName,provincesByPinyin)
 const fetcher = (url) => axios(url).then(data => {
   return data.data.data
 })
@@ -151,23 +151,25 @@ function Header ({title,onChange }) {
         <small>新型冠状病毒</small>
         <br />
         疫情实时动态 · { title||'全国' }
-        {title&&<small className='toggle' onClick={() => onChange(null)}>切换全国</small>}
+        {title&&<small className='toggle' onClick={onChange}>切换城市</small>}
       </h1>
     </header>
   )
 }
 
 function App () {
-  const defaultCity = provincesByPinyin['guangdong'].cities.find(p=> p.adcode == 440300)
-  const [province, _setProvince] = useState(null)
+  const defaultProvince = provincesByPinyin['guangdong']
+  const defaultCity = defaultProvince.cities.find(p=> p.adcode === 440300)
+  const [province, _setProvince] = useState(defaultProvince)
   const [city, _setCity] = useState(defaultCity)
+  const [show,_setShow] = useState(false)
   const setProvinceByUrl = () => {
     const p = window.location.pathname.slice(1)
     _setProvince(p ? provincesByPinyin[p] : null)
   }
 
   useEffect(() => {
-    setProvinceByUrl()
+    // setProvinceByUrl()
     window.addEventListener('popstate', setProvinceByUrl)
     return () => {
       window.removeEventListener('popstate', setProvinceByUrl)
@@ -193,6 +195,21 @@ function App () {
   }
   const setCity = (p) => {
     _setCity(p)
+  }
+
+  const onChangeCity = (value) => {
+    const pro = provinces.find(pro=> pro.adcode === value[0])
+    const city = pro.cities.find(city=> city.adcode === value[1] || city.cityName === value[1])
+    if(city){
+      _setProvince(pro)
+      _setCity(city)
+    }
+  }
+  const showMenu = () => {
+    _setShow(true)
+  }
+  const hideMenu = () => {
+    _setShow(false)
   }
   let data = []
   let area = []
@@ -226,7 +243,7 @@ function App () {
   const overall = city || province || all
   return (
     <div>
-      <Header title={title} onChange={setProvince} />
+      <Header title={title} onChange={showMenu} />
       <Stat { ...overall } name={title} modifyTime={all.modifyTime} />
       <div className="card">
         <h2>疫情地图 { title }
@@ -237,11 +254,13 @@ function App () {
         }
         </h2>
         <Suspense fallback={<div className="loading">地图正在加载中...</div>}>
-          {city? <CityMap city={city} data={data} />:<Map province={province} data={data} onClick={o => {
+          {city && city.areas? <CityMap city={city} data={data} />:<Map province={province} data={data} onClick={o => {
             const p = provincesByName[o.name]
+            console.log('dd',p)
             if (p) {
               setProvince(p)
             }else{
+              if(!o.data)return
               const c = provincesByName[o.data.parent]
               if(c){
                 const city = c.cities.find(k=> k.adcode === o.data.adcode)
@@ -262,6 +281,12 @@ function App () {
       </div>
       <News province={province} />
       <Summary />
+      {show && <CityMenu 
+        onHideMenu={hideMenu} 
+        onChangeCity={onChangeCity}
+        provinces={provinces} 
+        province={province} 
+        city={city} />}
     </div>
   );
 }

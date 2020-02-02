@@ -1,9 +1,16 @@
 import React from 'react'
-import echarts from 'echarts'
+import echarts from 'echarts' 
 
 export default class CityMap extends React.Component {
   constructor(props){
-    super()
+    super(props)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.city.cityName !== this.props.city.cityName){
+      const {city,data} = nextProps
+      this.initCharts(city,data)
+    }
   }
 
   componentDidMount(){
@@ -13,7 +20,7 @@ export default class CityMap extends React.Component {
 
   initCharts(city,data){
     if(!city.adcode) return
-    const cityJson = require(`./data/city/${city.adcode}_full.json`)
+    const cityJson = require(`../../data/city/${city.adcode}_full.json`)
     echarts.registerMap('city', cityJson);
     const myChart = echarts.init(this.mapNode);
     myChart.setOption({
@@ -27,12 +34,7 @@ export default class CityMap extends React.Component {
         right: 0,
         left: 0,
         inRange: {
-          color: [
-            '#ffc0b1',
-            '#ff8c71',
-            '#ef1717',
-            '#9c0505'
-          ]
+          color: ['lightskyblue','yellow','pink', 'orangered','red']
         },
         pieces: [
           {min: 1000},
@@ -47,10 +49,10 @@ export default class CityMap extends React.Component {
         orient: 'horizontal',
         showLabel: false,
         text: ['高', '低'],
-        itemWidth: 10,
-        itemHeight: 10,
+        itemWidth: 12,
+        itemHeight: 12,
         textStyle: {
-          fontSize: 10
+          fontSize: 12
         }
         // "borderWidth": 0
       },
@@ -65,7 +67,7 @@ export default class CityMap extends React.Component {
           show: true,
           position: 'inside',
           // margin: 8,
-          fontSize: 6
+          fontSize: 10
         },
         mapType: 'city',
         data,

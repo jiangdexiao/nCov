@@ -20,13 +20,18 @@ function Map ({ province, data, onClick }) {
         right: 0,
         left: province ? 0 : 'auto',
         inRange: {
-          color: [
-            '#ffc0b1',
-            '#ff8c71',
-            '#ef1717',
-            '#9c0505'
-          ]
+          color: ['lightskyblue','yellow','pink', 'orangered','red']
+          // color: [
+          //   '#ffc0b1',
+          //   '#ff8c71',
+          //   '#ef1717',
+          //   '#9c0505'
+          // ]
         },
+        tooltip : {
+					show:true,
+					formatter: '在建工程<br /> {b}: {c0}'
+				 },
         pieces: [
           {min: 1000},
           {min: 500, max: 999},
@@ -58,7 +63,7 @@ function Map ({ province, data, onClick }) {
           show: true,
           position: 'inside',
           // margin: 8,
-          fontSize: 6
+          fontSize: 10
         },
         mapType: province ? province.name : 'china',
         data,
