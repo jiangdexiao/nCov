@@ -10,6 +10,9 @@
   position: relative;
   z-index: 1000 !important;
 }
+.am-menu .am-flexbox .am-flexbox-item:first-child{
+  align-self: stretch;
+}
 .menu-mask {
   content: ' ';
   position: absolute;
