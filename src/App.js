@@ -3,26 +3,21 @@ import keyBy from 'lodash.keyby'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import relativeTime from 'dayjs/plugin/relativeTime'
-
 import all from './data/overall'
 import provinces from './data/area'
-
 import Tag from './Tag'
-
 import './App.css'
-import axios from 'axios'
-
-import {CityMap,CityMenu} from './component'
+// import { CityMap } from './component'
+import { fetcher } from './util'
 
 dayjs.extend(relativeTime)
-
+const CityMenu = React.lazy(()=> import('./component/CityMenu'))
+const CityMap = React.lazy(()=> import('./component/CityMap'))
 const Map = React.lazy(() => import('./component/ChinaMap'))
 
 const provincesByName = keyBy(provinces, 'name')
 const provincesByPinyin = keyBy(provinces, 'pinyin')
-const fetcher = (url) => axios(url).then(data => {
-  return data.data.data
-})
+
 
 function New ({ title, summary, sourceUrl, pubDate, pubDateStr }) {
   return (

@@ -1,10 +1,8 @@
 import React from 'react'
 import echarts from 'echarts' 
+import { fetcher } from '../../util'
 
 export default class CityMap extends React.Component {
-  constructor(props){
-    super(props)
-  }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.city.cityName !== this.props.city.cityName){

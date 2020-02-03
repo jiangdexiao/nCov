@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, ActivityIndicator, NavBar } from 'antd-mobile';
+import { Menu } from 'antd-mobile';
 import './index.css'
 
 export default class CityMenu extends React.Component {
