@@ -8,9 +8,9 @@ import provinces from './data/area'
 import Tag from './Tag'
 import './App.css'
 import { Header,News,List,Summary } from './component/Layout'
-
+import { CityMenu } from './component'
 dayjs.extend(relativeTime)
-const CityMenu = React.lazy(()=> import('./component/CityMenu'))
+// const CityMenu = React.lazy(()=> import('./component/CityMenu'))
 const CityMap = React.lazy(()=> import('./component/CityMap'))
 const Map = React.lazy(() => import('./component/ChinaMap'))
 
@@ -85,7 +85,7 @@ function App () {
     _setCity(p)
   }
 
-  const onChangeCity = (value) => {
+  const onChangeCity = (value) => {console.log(value)
     const pro = provinces.find(pro=> pro.adcode === value[0])
     const city = pro.cities.find(city=> city.adcode === value[1] || city.cityName === value[1])
     if(city){
