@@ -1,6 +1,6 @@
 import React from 'react'
 import echarts from 'echarts' 
-import { fetcher } from '../../util'
+import { loopHandle } from '../../lib/geoJson'
 
 export default class CityMap extends React.Component {
 
@@ -27,9 +27,9 @@ export default class CityMap extends React.Component {
     })
   }
 
-  initCharts(city,data){
+  async initCharts(city,data){
     if(!city.adcode) return
-    const cityJson = require(`../../data/city/${city.adcode}_full.json`)
+    const cityJson = await loopHandle(city.adcode)
     echarts.registerMap('city', cityJson);
     const myChart = echarts.init(this.mapNode);
     myChart.setOption({
